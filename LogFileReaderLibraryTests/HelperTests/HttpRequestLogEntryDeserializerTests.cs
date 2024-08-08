@@ -23,6 +23,18 @@ public class HttpRequestLogEntryDeserializerTests
         list.Count.Should().Be(size);
     }
     
+    [Theory]
+    [InlineData("TestData.BadLogFile.log", 1)]
+    public void FailLogEntryListDeserialization(string testResourceName, int amountOfBadLines)
+    {
+        // Arrange
+        var testDataStream = StreamHelpers.ReadEmbeddedResourceAsStream(testResourceName);
+        
+        // Act & Assert
+        var exception = Assert.Throws<AggregateException>(() => HttpRequestLogEntryDeserializer.DeserializeApacheClfList(testDataStream));
+        exception.InnerExceptions.Count.Should().Be(amountOfBadLines);
+    }
+    
     [Fact]
     public void SuccessfulLogEntryDeserializationMapping()
     {
