@@ -1,16 +1,23 @@
 using System.ComponentModel.DataAnnotations;
 using LogFileReaderLibrary.Helpers;
-using LogFileReaderLibrary.Services;
-using Microsoft.Extensions.Logging;
 
 namespace LogFileReaderLibrary.Validators;
 
 /// <summary>
-/// Validates the 
+/// Validator for HTTP request log entries.
 /// </summary>
-public class HttpRequestLogEntryValidator(ILogger<HttpRequestLogEntryValidator> logger)
+public static class HttpRequestLogEntryValidator
 {
-    public bool Validate(Stream logContent)
+    /// <summary>
+    /// Validates the log content by reading each line and attempting to deserialize it. 
+    /// If any line is in an unexpected format, a <see cref="ValidationException"/> is added to a list of exceptions.
+    /// If no exceptions are encountered, the method returns true.
+    /// If there are any exceptions, an <see cref="AggregateException"/> is thrown containing all the validation exceptions.
+    /// </summary>
+    /// <param name="logContent">A <see cref="Stream"/> containing the log content to be validated.</param>
+    /// <returns>Returns <c>true</c> if all lines are successfully validated.</returns>
+    /// <exception cref="AggregateException">Thrown when one or more lines in the log content are in an unexpected format.</exception>
+    public static bool ValidateOrThrow(Stream logContent)
     {
         var exceptions = new List<Exception>();
         using var reader = new StreamReader(logContent);
@@ -33,8 +40,6 @@ public class HttpRequestLogEntryValidator(ILogger<HttpRequestLogEntryValidator> 
             return true;
         }
         
-        var aggregateException = new AggregateException(exceptions);
-        logger.LogError(aggregateException, "Log file was in incorrect format.");
-        return false;
+        throw new AggregateException(exceptions);
     }
 }

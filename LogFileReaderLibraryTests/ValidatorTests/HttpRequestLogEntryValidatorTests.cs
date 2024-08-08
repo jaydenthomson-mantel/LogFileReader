@@ -9,18 +9,15 @@ namespace LogFileReaderLibraryTests.ValidatorTests;
 
 public class HttpRequestLogEntryValidatorTests
 {
-    private readonly Mock<ILogger<HttpRequestLogEntryValidator>> _mockLogger = new();
-    
     [Theory]
     [InlineData("TestData.SampleLogFile.log")]
     public void ValidatorShouldPass(string testResourceName)
     {
         // Arrange
         var testDataStream = StreamHelpers.ReadEmbeddedResourceAsStream(testResourceName);
-        var validator = new HttpRequestLogEntryValidator(_mockLogger.Object);
         
         // Act
-        var valid = validator.Validate(testDataStream);
+        var valid = HttpRequestLogEntryValidator.ValidateOrThrow(testDataStream);
         
         // Assert
         valid.Should().BeTrue();
