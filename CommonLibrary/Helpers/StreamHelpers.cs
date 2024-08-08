@@ -13,7 +13,7 @@ public static class StreamHelpers
     /// <param name="resourceName">The name of the resource to read.</param>
     /// <returns>A <see cref="Stream"/> representing the embedded resource.</returns>
     /// <exception cref="ArgumentException">Thrown when the specified resource is not found in the assembly.</exception>
-    public static Stream ReadEmbeddedResourceAsStream(this string resourceName)
+    public static Stream ReadEmbeddedResourceAsStream(string resourceName)
     {
         var assembly = Assembly.GetCallingAssembly();
         var fullResourceName = $"{assembly.GetName().Name}.{resourceName}";
