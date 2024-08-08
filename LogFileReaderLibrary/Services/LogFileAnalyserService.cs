@@ -6,16 +6,16 @@ namespace LogFileReaderLibrary.Services;
 /// <summary>
 /// This service analyses the contents of a log file.
 /// </summary>
-public class LogFileAnalyserService
+public static class LogFileAnalyserService
 {
-    public int UniqueIpCount(IEnumerable<HttpRequestLogEntry> logContent)
+    public static int UniqueIpCount(IEnumerable<HttpRequestLogEntry> logContent)
     {
         var ips = logContent.Select(x => x.IpAddress);
         var distinctIps = ips.Distinct();
         return distinctIps.Count();
     }
 
-    public IDictionary<string, int> MostVisitedUrls(IEnumerable<HttpRequestLogEntry> logContent, int top)
+    public static IDictionary<string, int> MostVisitedUrls(IEnumerable<HttpRequestLogEntry> logContent, int top)
     {
         var dict = logContent
             .GroupBy(entry => entry.Resource)
@@ -34,7 +34,7 @@ public class LogFileAnalyserService
         return dict;
     }
 
-    public IDictionary<string, int> MostActiveIps(IEnumerable<HttpRequestLogEntry> logContent, int top)
+    public static IDictionary<string, int> MostActiveIps(IEnumerable<HttpRequestLogEntry> logContent, int top)
     {
         var dict = logContent
             .GroupBy(entry => entry.IpAddress)

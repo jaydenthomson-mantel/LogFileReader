@@ -15,10 +15,9 @@ public class LogFileAnalyserServiceTests
         // Arrange
         var testDataStream = StreamHelpers.ReadEmbeddedResourceAsStream(testResourceName);
         var testList = HttpRequestLogEntryDeserializer.DeserializeApacheClfList(testDataStream);
-        var analyser = new LogFileAnalyserService();
         
         // Act
-        var actualCount = analyser.UniqueIpCount(testList);
+        var actualCount = LogFileAnalyserService.UniqueIpCount(testList);
 
         // Assert
         actualCount.Should().Be(expectedCount);
@@ -32,10 +31,9 @@ public class LogFileAnalyserServiceTests
         // Arrange
         var testDataStream = StreamHelpers.ReadEmbeddedResourceAsStream(testResourceName);
         var testList = HttpRequestLogEntryDeserializer.DeserializeApacheClfList(testDataStream);
-        var analyser = new LogFileAnalyserService();
         
         // Act
-        var actualTopUrls = analyser.MostVisitedUrls(testList, top).Keys.ToArray();
+        var actualTopUrls = LogFileAnalyserService.MostVisitedUrls(testList, top).Keys.ToArray();
 
         // Assert
         actualTopUrls.Should().Equal(expectedTopUrls);
@@ -49,10 +47,9 @@ public class LogFileAnalyserServiceTests
         // Arrange
         var testDataStream = StreamHelpers.ReadEmbeddedResourceAsStream(testResourceName);
         var testList = HttpRequestLogEntryDeserializer.DeserializeApacheClfList(testDataStream);
-        var analyser = new LogFileAnalyserService();
         
         // Act
-        var actualTopUrls = analyser.MostActiveIps(testList, top).Keys.ToArray();
+        var actualTopUrls = LogFileAnalyserService.MostActiveIps(testList, top).Keys.ToArray();
 
         // Assert
         actualTopUrls.Should().Equal(expectedTopIps);
