@@ -1,4 +1,5 @@
 using System.Globalization;
+using CommonLibrary.Helpers;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using LogFileReaderLibrary.Helpers;
@@ -7,6 +8,20 @@ namespace LogFileReaderLibraryTests.HelperTests;
 
 public class HttpRequestLogEntryDeserializerTests
 {
+    [Theory]
+    [InlineData("TestData.SampleLogFile.log")]
+    public void SuccessfulLogEntryListDeserialization(string testResourceName)
+    {
+        // Arrange
+        var testDataStream = StreamHelpers.ReadEmbeddedResourceAsStream(testResourceName);
+        
+        // Act
+        var list = HttpRequestLogEntryDeserializer.DeserializeApacheClfList(testDataStream);
+        
+        // Assert
+        list.Count.Should().Be(23);
+    }
+    
     [Fact]
     public void SuccessfulLogEntryDeserializationMapping()
     {

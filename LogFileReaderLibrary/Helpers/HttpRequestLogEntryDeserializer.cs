@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using LogFileReaderLibrary.Models;
@@ -11,6 +12,40 @@ public static class HttpRequestLogEntryDeserializer
 {
     private const string ApacheClfPattern = @"^(?<ip>[\d\.]+) (?<identd>[\S]+) (?<userid>[\S]+) \[(?<timestamp>[^\]]+)\] ""(?<method>[A-Z]+) (?<resource>[^ ]+) (?<httpversion>[^""]+)"" (?<status>\d{3}) (?<size>\d+|-) ""(?<referer>[^""]*)"" ""(?<useragent>[^""]*)""(?: (?<extra>.*))?$";
     private static readonly Regex ApacheClfRegex = new (ApacheClfPattern, RegexOptions.CultureInvariant, TimeSpan.FromSeconds(5));
+
+    /// <summary>
+    /// Deserializes a stream of Apache Common Log Format (CLF) entries into a list of <see cref="HttpRequestLogEntry"/> objects.
+    /// </summary>
+    /// <param name="logContent">A stream containing log entries in Apache CLF format.</param>
+    /// <returns>A list of deserialized <see cref="HttpRequestLogEntry"/> objects.</returns>
+    /// <exception cref="AggregateException">Thrown when one or more log entries are in an unexpected format.</exception>
+    public static List<HttpRequestLogEntry> DeserializeApacheClfList(Stream logContent)
+    {
+        var logEntries = new List<HttpRequestLogEntry>();
+        var exceptions = new List<Exception>();
+        using var reader = new StreamReader(logContent);
+        
+        while (reader.ReadLine() is { } line)
+        {
+            try
+            {
+                var logEntry = HttpRequestLogEntryDeserializer.DeserializeApacheClf(line);
+                logEntries.Add(logEntry);
+            }
+            catch (Exception ex)
+            {
+                var validationException = new ValidationException($"Log '{line}' was in unexpected format.", ex);
+                exceptions.Add(validationException);
+            }
+        }
+
+        if (exceptions.Count == 0)
+        {
+            return logEntries;
+        }
+        
+        throw new AggregateException(exceptions);
+    }
     
     /// <summary>
     /// Deserializes a log entry in the Apache Common Log Format (CLF) into an <see cref="HttpRequestLogEntry"/> object.
