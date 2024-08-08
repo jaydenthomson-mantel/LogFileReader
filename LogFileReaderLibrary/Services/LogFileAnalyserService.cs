@@ -8,14 +8,14 @@ namespace LogFileReaderLibrary.Services;
 /// </summary>
 public class LogFileAnalyserService
 {
-    public int UniqueIpCount(List<HttpRequestLogEntry> logContent)
+    public int UniqueIpCount(IEnumerable<HttpRequestLogEntry> logContent)
     {
         var ips = logContent.Select(x => x.IpAddress);
         var distinctIps = ips.Distinct();
         return distinctIps.Count();
     }
 
-    public IDictionary<string, int> MostVisitedUrls(List<HttpRequestLogEntry> logContent, int top)
+    public IDictionary<string, int> MostVisitedUrls(IEnumerable<HttpRequestLogEntry> logContent, int top)
     {
         var dict = logContent
             .GroupBy(entry => entry.Resource)
@@ -34,7 +34,7 @@ public class LogFileAnalyserService
         return dict;
     }
 
-    public IDictionary<string, int> MostActiveIps(List<HttpRequestLogEntry> logContent, int top)
+    public IDictionary<string, int> MostActiveIps(IEnumerable<HttpRequestLogEntry> logContent, int top)
     {
         var dict = logContent
             .GroupBy(entry => entry.IpAddress)
