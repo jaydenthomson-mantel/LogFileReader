@@ -11,7 +11,7 @@ public class LogFileAnalyserServiceTests
     public void UniqueIpCountReturnsCorrectCount(string testResourceName, int expectedCount)
     {
         // Arrange
-        var testDataStream = testResourceName.ReadEmbeddedResourceAsStream();
+        var testDataStream = StreamHelpers.ReadEmbeddedResourceAsStream(testResourceName);
         var analyser = new LogFileAnalyserService();
         
         // Act
@@ -26,7 +26,7 @@ public class LogFileAnalyserServiceTests
     public void MostVisitedUrlsReturnsCorrectUrls(string testResourceName, int top, params string[] expectedTopUrls)
     {
         // Arrange
-        var testDataStream = testResourceName.ReadEmbeddedResourceAsStream();
+        var testDataStream = StreamHelpers.ReadEmbeddedResourceAsStream(testResourceName);
         var analyser = new LogFileAnalyserService();
         
         // Act
@@ -41,7 +41,7 @@ public class LogFileAnalyserServiceTests
     public void MostActiveIpsReturnsCorrectIps(string testResourceName, int top, params string[] expectedTopIps)
     {
         // Arrange
-        var testDataStream = testResourceName.ReadEmbeddedResourceAsStream();
+        var testDataStream = StreamHelpers.ReadEmbeddedResourceAsStream(testResourceName);
         var analyser = new LogFileAnalyserService();
         
         // Act
