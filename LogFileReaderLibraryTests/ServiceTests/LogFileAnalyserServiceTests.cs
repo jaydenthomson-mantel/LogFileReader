@@ -9,6 +9,7 @@ public class LogFileAnalyserServiceTests
 {
     [Theory]
     [InlineData("TestData.SampleLogFile.log", 11)]
+    [InlineData("TestData.EmptyLogFile.log", 0)]
     public void UniqueIpCountReturnsCorrectCount(string testResourceName, int expectedCount)
     {
         // Arrange
@@ -25,6 +26,7 @@ public class LogFileAnalyserServiceTests
     
     [Theory]
     [InlineData("TestData.SampleLogFile.log", 3, "/docs/manage-websites/", "/temp-redirect", "/moved-permanently")]
+    [InlineData("TestData.EmptyLogFile.log", 3)]
     public void MostVisitedUrlsReturnsCorrectUrls(string testResourceName, int top, params string[] expectedTopUrls)
     {
         // Arrange
@@ -41,6 +43,7 @@ public class LogFileAnalyserServiceTests
     
     [Theory]
     [InlineData("TestData.SampleLogFile.log", 3, "168.41.191.40", "50.112.00.11", "177.71.128.21")]
+    [InlineData("TestData.EmptyLogFile.log", 3)]
     public void MostActiveIpsReturnsCorrectIps(string testResourceName, int top, params string[] expectedTopIps)
     {
         // Arrange

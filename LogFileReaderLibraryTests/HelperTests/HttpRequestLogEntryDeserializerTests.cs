@@ -9,8 +9,9 @@ namespace LogFileReaderLibraryTests.HelperTests;
 public class HttpRequestLogEntryDeserializerTests
 {
     [Theory]
-    [InlineData("TestData.SampleLogFile.log")]
-    public void SuccessfulLogEntryListDeserialization(string testResourceName)
+    [InlineData("TestData.SampleLogFile.log", 23)]
+    [InlineData("TestData.EmptyLogFile.log", 0)]
+    public void SuccessfulLogEntryListDeserialization(string testResourceName, int size)
     {
         // Arrange
         var testDataStream = StreamHelpers.ReadEmbeddedResourceAsStream(testResourceName);
@@ -19,7 +20,7 @@ public class HttpRequestLogEntryDeserializerTests
         var list = HttpRequestLogEntryDeserializer.DeserializeApacheClfList(testDataStream);
         
         // Assert
-        list.Count.Should().Be(23);
+        list.Count.Should().Be(size);
     }
     
     [Fact]

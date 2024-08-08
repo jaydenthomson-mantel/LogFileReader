@@ -27,6 +27,10 @@
       <EmbeddedResource Include="TestData\SampleLogFile.log">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </EmbeddedResource>
+      <None Remove="TestData\EmptyLogFile.log" />
+      <EmbeddedResource Include="TestData\EmptyLogFile.log">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
