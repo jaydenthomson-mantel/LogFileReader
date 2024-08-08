@@ -1,4 +1,5 @@
-﻿using LogFileReaderLibrary.Models;
+﻿using System.Xml;
+using LogFileReaderLibrary.Models;
 
 namespace LogFileReaderLibrary.Services;
 
@@ -16,11 +17,39 @@ public class LogFileAnalyserService
 
     public IDictionary<string, int> MostVisitedUrls(List<HttpRequestLogEntry> logContent, int top)
     {
-        throw new NotImplementedException();
+        var dict = logContent
+            .GroupBy(entry => entry.Resource)
+            .Select(group => new 
+            { 
+                Url = group.Key, 
+                Count = group.Count(), 
+                LatestTimestamp = group.Max(entry => entry.Timestamp),
+                LogEntries = group
+            })
+            .OrderByDescending(x => x.Count)
+            .ThenByDescending(x => x.LatestTimestamp)
+            .Take(top)
+            .ToDictionary(group => group.Url, group => group.Count);
+        
+        return dict;
     }
 
     public IDictionary<string, int> MostActiveIps(List<HttpRequestLogEntry> logContent, int top)
     {
-        throw new NotImplementedException();
+        var dict = logContent
+            .GroupBy(entry => entry.IpAddress)
+            .Select(group => new 
+            { 
+                IpAddress = group.Key, 
+                Count = group.Count(), 
+                LatestTimestamp = group.Max(entry => entry.Timestamp),
+                LogEntries = group
+            })
+            .OrderByDescending(x => x.Count)
+            .ThenByDescending(x => x.LatestTimestamp)
+            .Take(top)
+            .ToDictionary(group => group.IpAddress, group => group.Count);
+        
+        return dict;
     }
 }

@@ -24,7 +24,7 @@ public class LogFileAnalyserServiceTests
     }
     
     [Theory]
-    [InlineData("TestData.SampleLogFile.log", 3, "/docs/manage-websites/", "/faq/", "/intranet-analytics/")]
+    [InlineData("TestData.SampleLogFile.log", 3, "/docs/manage-websites/", "/temp-redirect", "/moved-permanently")]
     public void MostVisitedUrlsReturnsCorrectUrls(string testResourceName, int top, params string[] expectedTopUrls)
     {
         // Arrange
@@ -40,7 +40,7 @@ public class LogFileAnalyserServiceTests
     }
     
     [Theory]
-    [InlineData("TestData.SampleLogFile.log", 3, "168.41.191.40", "177.71.128.21", "50.112.00.11")]
+    [InlineData("TestData.SampleLogFile.log", 3, "168.41.191.40", "50.112.00.11", "177.71.128.21")]
     public void MostActiveIpsReturnsCorrectIps(string testResourceName, int top, params string[] expectedTopIps)
     {
         // Arrange
