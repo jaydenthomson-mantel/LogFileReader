@@ -4,12 +4,23 @@ using LogFileReaderLibrary.Models;
 
 namespace LogFileReaderLibrary.Helpers;
 
+/// <summary>
+/// Helper class for deserializing http request logs.
+/// </summary>
 public static class HttpRequestLogEntryDeserializer
 {
-    public static HttpRequestLogEntry Deserialize(string logEntry)
+    private const string ApacheClfPattern = """^(?<ip>[\d\.]+) (?<identd>[\S]+) (?<userid>[\S]+) \[(?<timestamp>[^\]]+)\] "(?<method>[A-Z]+) (?<resource>[^ ]+) (?<httpversion>[^"]+)" (?<status>\d{3}) (?<size>\d+|-) "(?<referer>[^"]*)" "(?<useragent>[^"]*)"$""";
+    private static readonly Regex ApacheClfRegex = new Regex(ApacheClfPattern, RegexOptions.CultureInvariant, TimeSpan.FromSeconds(5));
+    
+    /// <summary>
+    /// Deserializes a log entry in the Apache Common Log Format (CLF) into an <see cref="HttpRequestLogEntry"/> object.
+    /// </summary>
+    /// <param name="logEntry">A string representing a single log entry in the Apache CLF format.</param>
+    /// <returns>An <see cref="HttpRequestLogEntry"/> object containing the parsed data from the log entry.</returns>
+    /// <exception cref="FormatException">Thrown when the log entry does not match the expected Apache CLF format.</exception>
+    public static HttpRequestLogEntry DeserializeApacheClf(string logEntry)
     {
-        const string pattern = @"^(?<ip>[\d\.]+) (?<identd>[\S]+) (?<userid>[\S]+) \[(?<timestamp>[^\]]+)\] ""(?<method>[A-Z]+) (?<resource>[^ ]+) (?<httpversion>[^""]+)"" (?<status>\d{3}) (?<size>\d+|-) ""(?<referer>[^""]*)"" ""(?<useragent>[^""]*)""$";
-        var match = Regex.Match(logEntry, pattern); // TODO refactor regex class to be a static class (better performance)
+        var match = ApacheClfRegex.Match(logEntry);
 
         if (!match.Success)
         {
