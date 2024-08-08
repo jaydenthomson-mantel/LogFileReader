@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using LogFileReaderLibrary.Helpers;
+﻿using LogFileReaderLibrary.Models;
 
 namespace LogFileReaderLibrary.Services;
 
@@ -8,26 +7,19 @@ namespace LogFileReaderLibrary.Services;
 /// </summary>
 public class LogFileAnalyserService
 {
-    public int UniqueIpCount(Stream logContent)
+    public int UniqueIpCount(List<HttpRequestLogEntry> logContent)
     {
-        var hashSet = new HashSet<string>();
-        using var reader = new StreamReader(logContent);
-        
-        while (reader.ReadLine() is { } line)
-        {
-            var logEntry = HttpRequestLogEntryDeserializer.DeserializeApacheClf(line);
-            hashSet.Add(logEntry.IpAddress);
-        }
-
-        return hashSet.Count;
+        var ips = logContent.Select(x => x.IpAddress);
+        var distinctIps = ips.Distinct();
+        return distinctIps.Count();
     }
 
-    public IDictionary<string, int> MostVisitedUrls(Stream logContent, int top)
+    public IDictionary<string, int> MostVisitedUrls(List<HttpRequestLogEntry> logContent, int top)
     {
         throw new NotImplementedException();
     }
 
-    public IDictionary<string, int> MostActiveIps(Stream logContent, int top)
+    public IDictionary<string, int> MostActiveIps(List<HttpRequestLogEntry> logContent, int top)
     {
         throw new NotImplementedException();
     }
