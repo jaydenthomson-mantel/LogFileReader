@@ -8,6 +8,11 @@ namespace LogFileReaderLibrary.Services;
 /// </summary>
 public static class LogFileAnalyserService
 {
+    /// <summary>
+    /// Calculates the number of unique IP addresses in the log content.
+    /// </summary>
+    /// <param name="logContent">A collection of log entries.</param>
+    /// <returns>The count of unique IP addresses.</returns>
     public static int UniqueIpCount(IEnumerable<HttpRequestLogEntry> logContent)
     {
         var ips = logContent.Select(x => x.IpAddress);
@@ -15,6 +20,13 @@ public static class LogFileAnalyserService
         return distinctIps.Count();
     }
 
+    /// <summary>
+    /// Retrieves the most visited URLs from the log content.
+    /// When multiple URLs have the same number of visits, it will favour returning the latest.
+    /// </summary>
+    /// <param name="logContent">A collection of log entries.</param>
+    /// <param name="top">The number of top URLs to return.</param>
+    /// <returns>A dictionary where the key is the URL and the value is the visit count.</returns>
     public static IDictionary<string, int> MostVisitedUrls(IEnumerable<HttpRequestLogEntry> logContent, int top)
     {
         var dict = logContent
@@ -34,6 +46,13 @@ public static class LogFileAnalyserService
         return dict;
     }
 
+    /// <summary>
+    /// Retrieves the most active IP addresses from the log content.
+    /// When multiple IPs have the same number of visits, it will favour returning the latest.
+    /// </summary>
+    /// <param name="logContent">A collection of log entries.</param>
+    /// <param name="top">The number of top IP addresses to return.</param>
+    /// <returns>A dictionary where the key is the IP address and the value is the request count.</returns>
     public static IDictionary<string, int> MostActiveIps(IEnumerable<HttpRequestLogEntry> logContent, int top)
     {
         var dict = logContent
