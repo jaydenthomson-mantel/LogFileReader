@@ -29,7 +29,7 @@ public static class HttpRequestLogEntryDeserializer
         {
             try
             {
-                var logEntry = DeserializeApacheClf(line);
+                var logEntry = HttpRequestLogEntryDeserializer.DeserializeApacheClf(line);
                 logEntries.Add(logEntry);
             }
             catch (Exception ex)
@@ -71,7 +71,7 @@ public static class HttpRequestLogEntryDeserializer
         var resource = match.Groups["resource"].Value;
         var httpVersion = match.Groups["httpversion"].Value;
         var statusCode = int.Parse(match.Groups["status"].Value);
-        var responseSize = match.Groups["size"].Value == "-" ? 0 : int.Parse(match.Groups["size"].Value);
+        var responseSize = int.Parse(match.Groups["size"].Value);
         var referer = match.Groups["referer"].Value;
         var userAgent = match.Groups["useragent"].Value;
 
