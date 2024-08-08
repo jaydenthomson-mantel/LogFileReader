@@ -24,7 +24,7 @@ public class HttpRequestLogEntryDeserializerTests
     }
     
     [Theory]
-    [InlineData("TestData.BadLogFile.log", 1)]
+    [InlineData("TestData.BadLogFile.log", 2)]
     public void FailLogEntryListDeserialization(string testResourceName, int amountOfBadLines)
     {
         // Arrange
