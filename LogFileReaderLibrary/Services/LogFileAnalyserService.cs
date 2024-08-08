@@ -24,7 +24,7 @@ public static class LogFileAnalyserService
     /// Retrieves the most visited URLs from the log content.
     /// When multiple URLs have the same number of visits, it will favour returning the latest.
     /// </summary>
-    /// <param name="logContent">A collection of log entries.</param>
+    /// <param name="logContent">A collection of <see cref="HttpRequestLogEntry"/> objects.</param>
     /// <param name="top">The number of top URLs to return.</param>
     /// <returns>A dictionary where the key is the URL and the value is the visit count.</returns>
     public static IDictionary<string, int> MostVisitedUrls(IEnumerable<HttpRequestLogEntry> logContent, int top)
@@ -50,7 +50,7 @@ public static class LogFileAnalyserService
     /// Retrieves the most active IP addresses from the log content.
     /// When multiple IPs have the same number of visits, it will favour returning the latest.
     /// </summary>
-    /// <param name="logContent">A collection of log entries.</param>
+    /// <param name="logContent">A collection of <see cref="HttpRequestLogEntry"/> objects.</param>
     /// <param name="top">The number of top IP addresses to return.</param>
     /// <returns>A dictionary where the key is the IP address and the value is the request count.</returns>
     public static IDictionary<string, int> MostActiveIps(IEnumerable<HttpRequestLogEntry> logContent, int top)
