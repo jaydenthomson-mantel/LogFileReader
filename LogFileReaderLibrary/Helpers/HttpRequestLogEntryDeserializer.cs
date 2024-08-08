@@ -10,7 +10,7 @@ namespace LogFileReaderLibrary.Helpers;
 /// </summary>
 public static class HttpRequestLogEntryDeserializer
 {
-    private const string ApacheClfPattern = @"^(?<ip>[\d\.]+) (?<identd>[\S]+) (?<userid>[\S]+) \[(?<timestamp>[^\]]+)\] ""(?<method>[A-Z]+) (?<resource>[^ ]+) (?<httpversion>[^""]+)"" (?<status>\d{3}) (?<size>\d+|-) ""(?<referer>[^""]*)"" ""(?<useragent>[^""]*)""(?: (?<extra>.*))?$";
+    private const string ApacheClfPattern = """^(?<ip>[\d\.]+) (?<identd>[\S]+) (?<userid>[\S]+) \[(?<timestamp>[^\]]+)\] "(?<method>[A-Z]+) (?<resource>[^ ]+) (?<httpversion>[^"]+)" (?<status>\d{3}) (?<size>\d+|-) "(?<referer>[^"]*)" "(?<useragent>[^"]*)"(?: (?<extra>.*))?$""";
     private static readonly Regex ApacheClfRegex = new (ApacheClfPattern, RegexOptions.CultureInvariant, TimeSpan.FromSeconds(5));
 
     /// <summary>
@@ -29,7 +29,7 @@ public static class HttpRequestLogEntryDeserializer
         {
             try
             {
-                var logEntry = HttpRequestLogEntryDeserializer.DeserializeApacheClf(line);
+                var logEntry = DeserializeApacheClf(line);
                 logEntries.Add(logEntry);
             }
             catch (Exception ex)
