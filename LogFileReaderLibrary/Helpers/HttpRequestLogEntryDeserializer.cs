@@ -83,7 +83,7 @@ public static class HttpRequestLogEntryDeserializer
             Identd = identd,
             UserId = userId,
             Timestamp = timestamp,
-            HttpMethod = httpMethod,
+            HttpMethod = HttpMethod.Parse(httpMethod),
             Resource = resource,
             HttpVersion = httpVersion,
             StatusCode = statusCode,
