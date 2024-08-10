@@ -14,9 +14,11 @@ public static class LogFileAnalyserService
     /// <returns>The count of unique IP addresses.</returns>
     public static int UniqueIpCount(IEnumerable<ApacheClfLogEntry> logContent)
     {
-        var ips = logContent.Select(x => x.IpAddress);
-        var distinctIps = ips.Distinct();
-        return distinctIps.Count();
+        var ipCount = logContent.Select(x => x.IpAddress)
+            .Distinct()
+            .Count();
+
+        return ipCount;
     }
 
     /// <summary>
