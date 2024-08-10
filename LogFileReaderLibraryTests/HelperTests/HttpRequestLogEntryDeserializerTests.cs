@@ -4,6 +4,7 @@ using CommonLibrary.Helpers;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using LogFileReaderLibrary.Helpers;
+using LogFileReaderLibrary.Models.Exceptions;
 
 namespace LogFileReaderLibraryTests.HelperTests;
 
@@ -25,14 +26,14 @@ public class HttpRequestLogEntryDeserializerTests
     }
     
     [Theory]
-    [InlineData("TestData.BadLogFile.log", 2)]
+    [InlineData("TestData.BadLogFile.log", 3)]
     public void FailLogEntryListDeserialization(string testResourceName, int amountOfBadLines)
     {
         // Arrange
         var testDataStream = StreamHelpers.ReadEmbeddedResourceAsStream(testResourceName);
         
         // Act & Assert
-        var exception = Assert.Throws<AggregateException>(() => HttpRequestLogEntryDeserializer.DeserializeApacheClfList(testDataStream));
+        var exception = Assert.Throws<BadApacheClfFileException>(() => HttpRequestLogEntryDeserializer.DeserializeApacheClfList(testDataStream));
         exception.InnerExceptions.Count.Should().Be(amountOfBadLines);
     }
     

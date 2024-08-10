@@ -4,6 +4,7 @@ using System.Net;
 using System.Text.RegularExpressions;
 using CommonLibrary.Helpers;
 using LogFileReaderLibrary.Models;
+using LogFileReaderLibrary.Models.Exceptions;
 
 namespace LogFileReaderLibrary.Helpers;
 
@@ -24,7 +25,7 @@ public static class HttpRequestLogEntryDeserializer
     /// </summary>
     /// <param name="logContent">A stream containing log entries in Apache CLF format.</param>
     /// <returns>A list of deserialized <see cref="HttpRequestLogEntry"/> objects.</returns>
-    /// <exception cref="AggregateException">Thrown when one or more log entries are in an unexpected format.</exception>
+    /// <exception cref="BadApacheClfFileException">Thrown when one or more log entries throw an exception.</exception>
     public static List<HttpRequestLogEntry> DeserializeApacheClfList(Stream logContent)
     {
         logContent.Position = 0;
@@ -36,13 +37,12 @@ public static class HttpRequestLogEntryDeserializer
         {
             try
             {
-                var logEntry = HttpRequestLogEntryDeserializer.DeserializeApacheClf(line);
+                var logEntry = DeserializeApacheClf(line);
                 logEntries.Add(logEntry);
             }
             catch (Exception ex)
             {
-                var validationException = new ValidationException($"Log '{line}' was in unexpected format.", ex);
-                exceptions.Add(validationException);
+                exceptions.Add(ex);
             }
         }
 
@@ -50,8 +50,8 @@ public static class HttpRequestLogEntryDeserializer
         {
             return logEntries;
         }
-
-        throw new AggregateException(exceptions);
+        
+        throw new BadApacheClfFileException(exceptions);
     }
 
     /// <summary>
@@ -60,15 +60,16 @@ public static class HttpRequestLogEntryDeserializer
     /// </summary>
     /// <param name="logEntry">A string representing a single log entry in the Apache CLF format.</param>
     /// <returns>An <see cref="HttpRequestLogEntry"/> object containing the parsed data from the log entry.</returns>
-    /// <exception cref="FormatException">Thrown when the log entry does not match the expected Apache CLF format.</exception>
-    /// <exception cref="AggregateException">Thrown when one or properties are in unexpected formats.</exception>
+    /// <exception cref="ApacheClfLogValidationException">Thrown when one or more properties are invalid. The inner exceptions are of type <see cref="ValidationException"/>.</exception>
+    /// <exception cref="FormatException">Thrown when log structure is in an unexpected format.</exception>
+    /// <exception cref="InvalidOperationException">Thrown when a resource is found to be null after validation has been done.</exception>
     public static HttpRequestLogEntry DeserializeApacheClf(string logEntry)
     {
         var match = ApacheClfRegex.Match(logEntry);
 
         if (!match.Success)
         {
-            throw new FormatException("The log line is not in the expected format.");
+            throw new FormatException($"The log line '{logEntry}' is not in the expected format.");
         }
 
         var ipAddressStr = match.Groups["ip"].Value;
@@ -83,37 +84,37 @@ public static class HttpRequestLogEntryDeserializer
         var referer = match.Groups["referer"].Value;
         var userAgent = match.Groups["useragent"].Value;
 
-        var formatsExceptions = new List<FormatException>();
+        var formatExceptions = new List<ValidationException>();
 
         if (!IPAddress.TryParse(ipAddressStr, out _))
         {
-            formatsExceptions.Add(new FormatException("Invalid IP address format."));
+            formatExceptions.Add(new ValidationException($"'{ipAddressStr}' is an invalid IP address format."));
         }
 
         if (!HttpHelper.TryParseHttpStatusCode(statusCodeStr, out var statusCode))
         {
-            formatsExceptions.Add(new FormatException("Invalid status code format."));
+            formatExceptions.Add(new ValidationException($"'{statusCodeStr}' is an invalid status code format."));
         }
 
         if (!int.TryParse(responseSizeStr, out var responseSize))
         {
-            formatsExceptions.Add(new FormatException("Invalid response size format."));
+            formatExceptions.Add(new ValidationException($"'{responseSizeStr}' is an invalid response size format."));
         }
 
         if (!DateTimeOffset.TryParseExact(timestampStr, "dd/MMM/yyyy:HH:mm:ss zzz", CultureInfo.InvariantCulture,
                 DateTimeStyles.None, out var timestamp))
         {
-            formatsExceptions.Add(new FormatException("Invalid timestamp format."));
+            formatExceptions.Add(new ValidationException($"'{timestampStr}' is an invalid timestamp format."));
         }
 
         if (!Uri.TryCreate(resourceStr, UriKind.RelativeOrAbsolute, out var resource))
         {
-            formatsExceptions.Add(new FormatException("Invalid resource URI format."));
+            formatExceptions.Add(new ValidationException($"'{resourceStr}' is an invalid resource URI format."));
         }
 
-        if (formatsExceptions.Count > 0)
+        if (formatExceptions.Count > 0)
         {
-            throw new AggregateException("One or more properties in the string were invalid.", formatsExceptions);
+            throw new ApacheClfLogValidationException(logEntry, formatExceptions);
         }
 
         return new HttpRequestLogEntry
