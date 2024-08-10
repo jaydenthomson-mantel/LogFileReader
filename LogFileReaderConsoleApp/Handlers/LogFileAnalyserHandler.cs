@@ -14,7 +14,7 @@ public static class LogFileAnalyserHandler
     /// </summary>
     /// <param name="logEntries">A list of log entries to analyze.</param>
     /// <param name="top">The number of top entries to report for most visited URLs and most active IPs. Default is 3.</param>
-    public static async Task ReportInsights(IReadOnlyList<ApacheClfLogEntry> logEntries, int top = 3)
+    public static async Task ReportInsights(IReadOnlyList<LogEntry> logEntries, int top = 3)
     {
         var uniqueIpCountTask = Task.Run(() => LogFileAnalyserService.UniqueIpCount(logEntries));
         var mostVisitedUrlsTask = Task.Run(() => LogFileAnalyserService.MostVisitedUrls(logEntries, top));
