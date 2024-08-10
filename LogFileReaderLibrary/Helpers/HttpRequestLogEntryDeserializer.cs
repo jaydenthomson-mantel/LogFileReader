@@ -20,16 +20,16 @@ public static class HttpRequestLogEntryDeserializer
         new(ApacheClfPattern, RegexOptions.CultureInvariant, TimeSpan.FromSeconds(5));
 
     /// <summary>
-    /// Deserializes a stream of Apache Common Log Format (CLF) entries into a list of <see cref="HttpRequestLogEntry"/> objects.
+    /// Deserializes a stream of Apache Common Log Format (CLF) entries into a list of <see cref="ApacheClfLogEntry"/> objects.
     /// Sets <see cref="logContent"/> position to 0 before processing.
     /// </summary>
     /// <param name="logContent">A stream containing log entries in Apache CLF format.</param>
-    /// <returns>A list of deserialized <see cref="HttpRequestLogEntry"/> objects.</returns>
+    /// <returns>A list of deserialized <see cref="ApacheClfLogEntry"/> objects.</returns>
     /// <exception cref="BadApacheClfFileException">Thrown when one or more log entries throw an exception.</exception>
-    public static List<HttpRequestLogEntry> DeserializeApacheClfList(Stream logContent)
+    public static List<ApacheClfLogEntry> DeserializeApacheClfList(Stream logContent)
     {
         logContent.Position = 0;
-        var logEntries = new List<HttpRequestLogEntry>();
+        var logEntries = new List<ApacheClfLogEntry>();
         var exceptions = new List<Exception>();
         using var reader = new StreamReader(logContent);
 
@@ -55,15 +55,15 @@ public static class HttpRequestLogEntryDeserializer
     }
 
     /// <summary>
-    /// Deserializes a log entry in the Apache Common Log Format (CLF) into an <see cref="HttpRequestLogEntry"/> object.
+    /// Deserializes a log entry in the Apache Common Log Format (CLF) into an <see cref="ApacheClfLogEntry"/> object.
     /// It also ignores any additional data at the end of the string.
     /// </summary>
     /// <param name="logEntry">A string representing a single log entry in the Apache CLF format.</param>
-    /// <returns>An <see cref="HttpRequestLogEntry"/> object containing the parsed data from the log entry.</returns>
+    /// <returns>An <see cref="ApacheClfLogEntry"/> object containing the parsed data from the log entry.</returns>
     /// <exception cref="ApacheClfLogValidationException">Thrown when one or more properties are invalid. The inner exceptions are of type <see cref="ValidationException"/>.</exception>
     /// <exception cref="FormatException">Thrown when log structure is in an unexpected format.</exception>
     /// <exception cref="InvalidOperationException">Thrown when a resource is found to be null after validation has been done.</exception>
-    public static HttpRequestLogEntry DeserializeApacheClf(string logEntry)
+    public static ApacheClfLogEntry DeserializeApacheClf(string logEntry)
     {
         var match = ApacheClfRegex.Match(logEntry);
 
@@ -117,7 +117,7 @@ public static class HttpRequestLogEntryDeserializer
             throw new ApacheClfLogValidationException(logEntry, formatExceptions);
         }
 
-        return new HttpRequestLogEntry
+        return new ApacheClfLogEntry
         {
             IpAddress = ipAddressStr,
             Identd = identd,

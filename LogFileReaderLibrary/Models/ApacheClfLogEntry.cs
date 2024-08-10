@@ -2,7 +2,7 @@ using System.Net;
 
 namespace LogFileReaderLibrary.Models;
 
-public class HttpRequestLogEntry
+public class ApacheClfLogEntry
 {
     public required string IpAddress { get; init; }
     public required string Identd { get; init; }

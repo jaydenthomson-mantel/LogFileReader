@@ -5,7 +5,7 @@ namespace LogFileReaderConsoleApp.Handlers;
 
 public static class LogFileAnalyserHandler
 {
-    public static void ReportInsights(List<HttpRequestLogEntry> logEntries, int top = 3)
+    public static void ReportInsights(List<ApacheClfLogEntry> logEntries, int top = 3)
     {
         var uniqueIpCount = LogFileAnalyserService.UniqueIpCount(logEntries);
         var mostVisitedUrls = LogFileAnalyserService.MostVisitedUrls(logEntries, top);

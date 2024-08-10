@@ -6,7 +6,7 @@ namespace LogFileReaderConsoleApp.Handlers;
 
 public static class FileHandler
 {
-    public static bool TryReadFile(string filePath, out List<HttpRequestLogEntry> logEntries)
+    public static bool TryReadFile(string filePath, out List<ApacheClfLogEntry> logEntries)
     {
         logEntries = [];
 
