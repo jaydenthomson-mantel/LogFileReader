@@ -30,7 +30,7 @@ public static class LogFileAnalyserService
     public static IDictionary<string, int> MostVisitedUrls(IEnumerable<HttpRequestLogEntry> logContent, int top)
     {
         var dict = logContent
-            .GroupBy(entry => entry.Resource)
+            .GroupBy(entry => entry.Resource.OriginalString)
             .Select(group => new 
             { 
                 Url = group.Key, 

@@ -52,7 +52,7 @@ public class HttpRequestLogEntryDeserializerTests
             logEntry.UserId.Should().Be("-");
             logEntry.Timestamp.Should().Be(DateTimeOffset.ParseExact("10/Jul/2018:22:21:28 +0200", "dd/MMM/yyyy:HH:mm:ss zzz", CultureInfo.InvariantCulture));
             logEntry.HttpMethod.Should().Be(HttpMethod.Get);
-            logEntry.Resource.Should().Be("/intranet-analytics/");
+            logEntry.Resource.OriginalString.Should().Be("/intranet-analytics/");
             logEntry.HttpVersion.Should().Be("HTTP/1.1");
             logEntry.StatusCode.Should().Be(200);
             logEntry.ResponseSize.Should().Be(3574);
