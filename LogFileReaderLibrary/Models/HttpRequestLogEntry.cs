@@ -1,3 +1,5 @@
+using System.Net;
+
 namespace LogFileReaderLibrary.Models;
 
 public class HttpRequestLogEntry
@@ -9,7 +11,7 @@ public class HttpRequestLogEntry
     public HttpMethod HttpMethod { get; set; }
     public string HttpVersion { get; set; }
     public Uri Resource { get; set; }
-    public int StatusCode { get; set; }
+    public HttpStatusCode StatusCode { get; set; }
     public int ResponseSize { get; set; }
     public string Referer { get; set; }
     public string UserAgent { get; set; }

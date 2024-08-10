@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Net;
 using CommonLibrary.Helpers;
 using FluentAssertions;
 using FluentAssertions.Execution;
@@ -54,7 +55,7 @@ public class HttpRequestLogEntryDeserializerTests
             logEntry.HttpMethod.Should().Be(HttpMethod.Get);
             logEntry.Resource.OriginalString.Should().Be("/intranet-analytics/");
             logEntry.HttpVersion.Should().Be("HTTP/1.1");
-            logEntry.StatusCode.Should().Be(200);
+            logEntry.StatusCode.Should().Be(HttpStatusCode.OK);
             logEntry.ResponseSize.Should().Be(3574);
             logEntry.Referer.Should().Be("-");
             logEntry.UserAgent.Should().Be("Mozilla/5.0 (X11; U; Linux x86_64; fr-FR) AppleWebKit/534.7 (KHTML, like Gecko) Epiphany/2.30.6 Safari/534.7");

@@ -88,8 +88,7 @@ public static class HttpRequestLogEntryDeserializer
             formatsExceptions.Add(new FormatException("Invalid IP address format."));
         }
 
-        if (!int.TryParse(statusCodeStr, out var statusCodeInt) ||
-            !HttpHelper.TryParseHttpStatusCode(statusCodeStr, out _))
+        if (!HttpHelper.TryParseHttpStatusCode(statusCodeStr, out var statusCode))
         {
             formatsExceptions.Add(new FormatException("Invalid status code format."));
         }
@@ -124,7 +123,7 @@ public static class HttpRequestLogEntryDeserializer
             HttpMethod = HttpMethod.Parse(httpMethodStr),
             Resource = resource ?? throw new InvalidOperationException("Resource should not be null."),
             HttpVersion = httpVersion,
-            StatusCode = statusCodeInt,
+            StatusCode = statusCode,
             ResponseSize = responseSize,
             Referer = referer,
             UserAgent = userAgent
