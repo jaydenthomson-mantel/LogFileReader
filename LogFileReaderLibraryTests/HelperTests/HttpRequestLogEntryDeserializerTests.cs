@@ -90,9 +90,18 @@ public class HttpRequestLogEntryDeserializerTests
 
     [Theory]
     [InlineData("This is not a log.")]
-    public void FailLogEntryDeserialization(string logEntryRaw)
+    public void FailLogEntryDeserializationPatternMatching(string logEntryRaw)
     {
         // Act and Assert
         var exception = Assert.Throws<FormatException>(() => HttpRequestLogEntryDeserializer.DeserializeApacheClf(logEntryRaw));
+    }
+    
+    [Theory]
+    [InlineData("177.71.128.0.0 - - [Jul/10/2018:22:21:28 +0200] \"GT http:// HTTP/1.1\" 020 03574 \"-\" \"Mozilla/5.0 (X11; U; Linux x86_64; fr-FR) AppleWebKit/534.7 (KHTML, like Gecko) Epiphany/2.30.6 Safari/534.7\"", 4)]
+    public void FailLogEntryDeserializationMultipleFormatExceptions(string logEntryRaw, int numberOfExceptions)
+    {
+        // Act and Assert
+        var exception = Assert.Throws<AggregateException>(() => HttpRequestLogEntryDeserializer.DeserializeApacheClf(logEntryRaw));
+        exception.InnerExceptions.Count.Should().Be(numberOfExceptions);
     }
 }
