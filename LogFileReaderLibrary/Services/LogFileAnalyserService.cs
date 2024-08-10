@@ -37,7 +37,6 @@ public static class LogFileAnalyserService
                 Url = group.Key, 
                 Count = group.Count(), 
                 LatestTimestamp = group.Max(entry => entry.Timestamp),
-                LogEntries = group
             })
             .OrderByDescending(x => x.Count)
             .ThenByDescending(x => x.LatestTimestamp)
@@ -63,7 +62,6 @@ public static class LogFileAnalyserService
                 IpAddress = group.Key, 
                 Count = group.Count(), 
                 LatestTimestamp = group.Max(entry => entry.Timestamp),
-                LogEntries = group
             })
             .OrderByDescending(x => x.Count)
             .ThenByDescending(x => x.LatestTimestamp)
