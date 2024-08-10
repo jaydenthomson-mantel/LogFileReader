@@ -12,7 +12,7 @@ public static class LogFileAnalyserService
     /// </summary>
     /// <param name="logContent">A collection of log entries.</param>
     /// <returns>The count of unique IP addresses.</returns>
-    public static int UniqueIpCount(IEnumerable<ApacheClfLogEntry> logContent)
+    public static int UniqueIpCount(IReadOnlyList<ApacheClfLogEntry> logContent)
     {
         var ipCount = logContent.Select(x => x.IpAddress)
             .Distinct()
@@ -28,7 +28,7 @@ public static class LogFileAnalyserService
     /// <param name="logContent">A collection of <see cref="ApacheClfLogEntry"/> objects.</param>
     /// <param name="top">The number of top URLs to return.</param>
     /// <returns>A dictionary where the key is the URL and the value is the visit count.</returns>
-    public static IDictionary<string, int> MostVisitedUrls(IEnumerable<ApacheClfLogEntry> logContent, int top)
+    public static IDictionary<string, int> MostVisitedUrls(IReadOnlyList<ApacheClfLogEntry> logContent, int top)
     {
         var dict = logContent
             .GroupBy(entry => entry.Resource.OriginalString)
@@ -53,7 +53,7 @@ public static class LogFileAnalyserService
     /// <param name="logContent">A collection of <see cref="ApacheClfLogEntry"/> objects.</param>
     /// <param name="top">The number of top IP addresses to return.</param>
     /// <returns>A dictionary where the key is the IP address and the value is the request count.</returns>
-    public static IDictionary<string, int> MostActiveIps(IEnumerable<ApacheClfLogEntry> logContent, int top)
+    public static IDictionary<string, int> MostActiveIps(IReadOnlyList<ApacheClfLogEntry> logContent, int top)
     {
         var dict = logContent
             .GroupBy(entry => entry.IpAddress)

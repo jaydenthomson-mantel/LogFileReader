@@ -10,5 +10,5 @@ var filePath = args[0];
 
 if (FileHandler.TryReadFile(filePath, out var logEntries))
 {
-    LogFileAnalyserHandler.ReportInsights(logEntries);
+    await LogFileAnalyserHandler.ReportInsights(logEntries);
 }

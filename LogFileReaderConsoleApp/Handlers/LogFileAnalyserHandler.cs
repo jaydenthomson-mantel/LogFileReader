@@ -14,23 +14,25 @@ public static class LogFileAnalyserHandler
     /// </summary>
     /// <param name="logEntries">A list of log entries to analyze.</param>
     /// <param name="top">The number of top entries to report for most visited URLs and most active IPs. Default is 3.</param>
-    public static void ReportInsights(List<ApacheClfLogEntry> logEntries, int top = 3)
+    public static async Task ReportInsights(IReadOnlyList<ApacheClfLogEntry> logEntries, int top = 3)
     {
-        var uniqueIpCount = LogFileAnalyserService.UniqueIpCount(logEntries);
-        var mostVisitedUrls = LogFileAnalyserService.MostVisitedUrls(logEntries, top);
-        var mostActiveIps = LogFileAnalyserService.MostActiveIps(logEntries, top);
+        var uniqueIpCountTask = Task.Run(() => LogFileAnalyserService.UniqueIpCount(logEntries));
+        var mostVisitedUrlsTask = Task.Run(() => LogFileAnalyserService.MostVisitedUrls(logEntries, top));
+        var mostActiveIpsTask = Task.Run(() => LogFileAnalyserService.MostActiveIps(logEntries, top));
+
+        await Task.WhenAll(uniqueIpCountTask, mostVisitedUrlsTask, mostActiveIpsTask);
         
         Console.WriteLine("Log File Insights:");
-        Console.WriteLine($"Unique IP Count: {uniqueIpCount}");
+        Console.WriteLine($"Unique IP Count: {uniqueIpCountTask.Result}");
         
         Console.WriteLine("\nMost Visited URLs:");
-        foreach (var url in mostVisitedUrls)
+        foreach (var url in mostVisitedUrlsTask.Result)
         {
             Console.WriteLine($"URL: {url.Key}, Visits: {url.Value}");
         }
         
         Console.WriteLine("\nMost Active IPs:");
-        foreach (var ip in mostActiveIps)
+        foreach (var ip in mostActiveIpsTask.Result)
         {
             Console.WriteLine($"IP: {ip.Key}, Requests: {ip.Value}");
         }
