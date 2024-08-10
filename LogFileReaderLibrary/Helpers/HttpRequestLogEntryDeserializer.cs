@@ -20,12 +20,14 @@ public static class HttpRequestLogEntryDeserializer
 
     /// <summary>
     /// Deserializes a stream of Apache Common Log Format (CLF) entries into a list of <see cref="HttpRequestLogEntry"/> objects.
+    /// Sets <see cref="logContent"/> position to 0 before processing.
     /// </summary>
     /// <param name="logContent">A stream containing log entries in Apache CLF format.</param>
     /// <returns>A list of deserialized <see cref="HttpRequestLogEntry"/> objects.</returns>
     /// <exception cref="AggregateException">Thrown when one or more log entries are in an unexpected format.</exception>
     public static List<HttpRequestLogEntry> DeserializeApacheClfList(Stream logContent)
     {
+        logContent.Position = 0;
         var logEntries = new List<HttpRequestLogEntry>();
         var exceptions = new List<Exception>();
         using var reader = new StreamReader(logContent);
