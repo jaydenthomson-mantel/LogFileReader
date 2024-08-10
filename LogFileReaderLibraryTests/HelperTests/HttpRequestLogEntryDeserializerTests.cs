@@ -103,7 +103,7 @@ public class HttpRequestLogEntryDeserializerTests
     public void FailLogEntryDeserializationMultipleFormatExceptions(string logEntryRaw, int numberOfExceptions)
     {
         // Act and Assert
-        var exception = Assert.Throws<AggregateException>(() => HttpRequestLogEntryDeserializer.DeserializeApacheClf(logEntryRaw));
+        var exception = Assert.Throws<ApacheClfLogValidationException>(() => HttpRequestLogEntryDeserializer.DeserializeApacheClf(logEntryRaw));
         exception.InnerExceptions.Count.Should().Be(numberOfExceptions);
     }
 }
