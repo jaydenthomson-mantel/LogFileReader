@@ -86,6 +86,7 @@ public static class HttpRequestLogEntryDeserializer
 
         var formatExceptions = new List<ValidationException>();
 
+        // Not using the IPAddress object in the model because it reformats the original string.
         if (!IPAddress.TryParse(ipAddressStr, out _))
         {
             formatExceptions.Add(new ValidationException($"'{ipAddressStr}' is an invalid IP address format."));
