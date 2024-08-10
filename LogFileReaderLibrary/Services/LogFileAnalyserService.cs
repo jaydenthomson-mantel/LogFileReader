@@ -1,5 +1,4 @@
-﻿using System.Xml;
-using LogFileReaderLibrary.Models;
+﻿using LogFileReaderLibrary.Models;
 
 namespace LogFileReaderLibrary.Services;
 
