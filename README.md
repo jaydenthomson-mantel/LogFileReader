@@ -45,7 +45,7 @@ dotnet test
 No deployment pipeline currently implemented.
 
 ## Future Considerations
-- Currently implemented as a console app, however it is possible to reuse the code found in th library project
+- Currently implemented as a console app, however it is possible to reuse the code found in the library project
 to be in an API or a Batch Job if requirements evolve.
 - Change console app to have a secondary argument that changes the `top` variable.
 - Currently assumes file size will not be a problem in regards to memory. Should add additional validation in the
