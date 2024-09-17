@@ -13,6 +13,6 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest]
 
-    uses: ./.github/workflows/templates/build-template.yml
+    uses: ./.github/workflows/build-template.yml
     with:
       os: ${{ matrix.os }}
