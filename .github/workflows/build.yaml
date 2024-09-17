@@ -9,32 +9,10 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
 
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: Set up .NET Core
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: '8.0.x'
-
-    - name: Restore dependencies
-      run: dotnet restore
-
-    - name: Build project
-      run: dotnet build --configuration Release --no-restore
-
-    - name: Run tests
-      run: dotnet test --no-restore --verbosity normal
-
-    - name: Publish build artifacts
-      run: dotnet publish --configuration Release --output ./artifacts
-
-    - name: Archive production artifacts
-      if: success()
-      uses: actions/upload-artifact@v3
-      with:
-        name: build-artifact
-        path: ./artifacts
+    uses: ./.github/workflows/templates/build-template.yml
+    with:
+      os: ${{ matrix.os }}
