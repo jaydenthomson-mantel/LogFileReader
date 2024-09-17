@@ -16,3 +16,13 @@ jobs:
     uses: ./.github/workflows/build-template.yaml
     with:
       os: ${{ matrix.os }}
+  
+  publish:
+    needs: build
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, windows-latest ]
+
+    uses: ./.github/workflows/publish-template.yaml
+    with:
+      os: ${{ matrix.os }}
