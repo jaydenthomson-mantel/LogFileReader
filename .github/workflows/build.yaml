@@ -21,16 +21,16 @@ jobs:
         dotnet-version: '8.0.x'
 
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore LogFileReader.sln
 
     - name: Build project
-      run: dotnet build --configuration Release --no-restore
+      run: dotnet build LogFileReader.sln --configuration Release --no-restore
 
     - name: Run tests
-      run: dotnet test --no-restore --verbosity normal
+      run: dotnet test LogFileReader.sln --no-restore --verbosity normal
 
     - name: Publish build artifacts
-      run: dotnet publish --configuration Release --output ./artifacts
+      run: dotnet publish LogFileReader.sln --configuration Release --output ./artifacts
 
     - name: Archive production artifacts
       if: success()
