@@ -12,12 +12,16 @@ runs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: '8.0.x'
+      shell: bash
 
     - name: Restore dependencies
       run: dotnet restore
+      shell: bash
 
     - name: Build project
       run: dotnet build --configuration Release --no-restore
+      shell: bash
 
     - name: Run tests
       run: dotnet test --no-restore
+      shell: bash

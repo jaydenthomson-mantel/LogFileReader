@@ -10,6 +10,7 @@ runs:
   steps:
     - name: Publish build artifacts
       run: dotnet publish --configuration Release --output ./artifacts
+      shell: bash
 
     - name: Archive production artifacts
       if: success()
