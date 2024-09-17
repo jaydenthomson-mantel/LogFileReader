@@ -27,7 +27,7 @@ jobs:
         run: dotnet build --configuration Release --no-restore
 
       - name: Run tests
-        run: dotnet test --no-restore --verbosity normal
+        run: dotnet test --no-restore
 
       - name: Publish build artifacts
         run: dotnet publish --configuration Release --output ./artifacts
@@ -36,5 +36,5 @@ jobs:
         if: success()
         uses: actions/upload-artifact@v3
         with:
-          name: build-artifact
+          name: build-artifact-${{ inputs.os }}
           path: ./artifacts
