@@ -17,40 +17,23 @@ public static class FileHandler
     /// <returns><c>true</c> if the file was successfully read and deserialized; otherwise, <c>false</c>.</returns>
     public static bool TryReadFile(string filePath, out IReadOnlyList<LogEntry> logEntries)
     {
-        logEntries = [];
+        logEntries = Array.Empty<LogEntry>();
+
+        if (!File.Exists(filePath))
+        {
+            Console.WriteLine($"File not found: {filePath}");
+            return false;
+        }
 
         try
         {
-            if (!File.Exists(filePath))
-            {
-                Console.WriteLine($"File not found: {filePath}");
-                return false;
-            }
-
-            var content = File.OpenRead(filePath);
+            using var content = File.OpenRead(filePath);
             logEntries = HttpRequestLogEntryDeserializer.DeserializeApacheClfList(content);
             return true;
         }
         catch (BadApacheClfFileException ex)
         {
-            Console.WriteLine(ex.BadApacheClfFileExceptionErrorMessage);
-            
-            foreach (var innerException in ex.InnerExceptions)
-            {
-                if (innerException is ApacheClfLogValidationException aggregateException)
-                {
-                    Console.WriteLine($"\t{aggregateException.InvalidApacheClfLogLineErrorMessage}");
-    
-                    foreach (var nestedInnerException in aggregateException.InnerExceptions)
-                    {
-                        Console.WriteLine($"\t\t{nestedInnerException.Message}");
-                    }
-                }
-                else
-                {
-                    Console.WriteLine($"\t{innerException.Message}");
-                }
-            }
+            HandleBadApacheClfFileException(ex);
         }
         catch (Exception ex)
         {
@@ -58,5 +41,27 @@ public static class FileHandler
         }
 
         return false;
+    }
+
+    private static void HandleBadApacheClfFileException(BadApacheClfFileException ex)
+    {
+        Console.WriteLine(ex.BadApacheClfFileExceptionErrorMessage);
+
+        foreach (var innerException in ex.InnerExceptions)
+        {
+            if (innerException is ApacheClfLogValidationException aggregateException)
+            {
+                Console.WriteLine($"\t{aggregateException.InvalidApacheClfLogLineErrorMessage}");
+
+                foreach (var nestedInnerException in aggregateException.InnerExceptions)
+                {
+                    Console.WriteLine($"\t\t{nestedInnerException.Message}");
+                }
+            }
+            else
+            {
+                Console.WriteLine($"\t{innerException.Message}");
+            }
+        }
     }
 }

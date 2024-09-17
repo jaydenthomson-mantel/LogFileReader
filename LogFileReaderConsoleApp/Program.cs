@@ -1,14 +1,16 @@
 ﻿using LogFileReaderConsoleApp.Handlers;
+using LogFileReaderConsoleApp.Helpers;
 
-if (args.Length < 1)
+namespace LogFileReaderConsoleApp;
+
+public class Program
 {
-    Console.WriteLine("Provide a file path.");
-    return;
-}
-
-var filePath = args[0];
-
-if (FileHandler.TryReadFile(filePath, out var logEntries))
-{
-    await LogFileAnalyserHandler.ReportInsights(logEntries);
+    public static async Task Main(string[] args)
+    {
+        if (ConsoleArgumentsHelper.TryGetFilePath(args, out var filePath)
+            && FileHandler.TryReadFile(filePath!, out var logEntries))
+        {
+            await LogFileAnalyserHandler.ReportInsights(logEntries);
+        }
+    }
 }
