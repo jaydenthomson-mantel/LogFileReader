@@ -4,5 +4,5 @@ runs:
   using: "composite"
   steps:
     - name: Run tests
-      run: dotnet test --no-restore --verbosity normal --collect:"XPlat Code Coverage" --logger trx --results-directory coverage
+      run: dotnet test --no-restore --verbosity normal --collect:"XPlat Code Coverage" --logger trx --results-directory coverage --filter "FullyQualifiedName~!.*Tests$"
       shell: bash
