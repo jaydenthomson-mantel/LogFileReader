@@ -1,9 +1,0 @@
-name: Quality Check Template
-# only runs windows unit tests
-
-runs:
-  using: "composite"
-  steps:
-    - name: Run tests
-      run: dotnet test --no-restore
-      shell: bash

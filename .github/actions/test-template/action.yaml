@@ -1,0 +1,9 @@
+name: Test Template
+
+runs:
+  using: "composite"
+  steps:
+      
+    - name: Run tests
+      run: dotnet test --no-restore --verbosity normal --logger trx --collect:"XPlat Code Coverage"
+      shell: bash
