@@ -8,9 +8,9 @@ runs:
       shell: bash
     
     - name: Run Mutation Tests
-      run: dotnet stryker
+      run: dotnet stryker --reporter "markdown"
       shell: bash
       
     - name: Write to Job Summary
-      run: cat $(find . -name "mutation-report.html") >> $GITHUB_STEP_SUMMARY
+      run: cat $(find . -name "mutation-report.md") >> $GITHUB_STEP_SUMMARY
       shell: bash
