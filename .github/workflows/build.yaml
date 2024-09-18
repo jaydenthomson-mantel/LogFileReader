@@ -29,8 +29,8 @@ jobs:
       - name: Test
         uses: ./.github/actions/test-template
         
-      - name: Quality
-        uses: ./.github/actions/quality-template
+      - name: Coverage
+        uses: ./.github/actions/coverage-template
         if: matrix.os == 'ubuntu-latest'
 
       - name: Publish

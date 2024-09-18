@@ -1,4 +1,4 @@
-name: Quality Template
+name: Coverage Template
 
 runs:
   using: "composite"
