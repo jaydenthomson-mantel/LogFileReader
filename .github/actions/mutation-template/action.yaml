@@ -3,6 +3,10 @@ name: Mutation Template
 runs:
   using: "composite"
   steps:
-    - name: Say Hello
-      run: echo "Hello, World!"
+    - name: Download Stryker
+      run: dotnet tool install -g dotnet-stryker
+      shell: bash
+    
+    - name: Run Mutation Tests
+      run: dotnet stryker
       shell: bash
