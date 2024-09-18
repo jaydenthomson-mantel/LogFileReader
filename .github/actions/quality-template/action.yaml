@@ -1,0 +1,8 @@
+name: Quality Template
+
+runs:
+  using: "composite"
+  steps:
+    - name: Temporary Step
+      run: echo "This is a temporary step."
+      shell: bash
