@@ -3,6 +3,10 @@ name: Quality Template
 runs:
   using: "composite"
   steps:
-    - name: Temporary Step
-      run: echo "This is a temporary step."
-      shell: bash
+    - name: Code Coverage Summary Report
+      uses: irongut/CodeCoverageSummary@v1.3.0
+      with:
+        filename: 'coverage/*/coverage.cobertura.xml'
+        badge: true
+        format: 'markdown'
+        output: 'both'
