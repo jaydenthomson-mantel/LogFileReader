@@ -1,0 +1,8 @@
+name: Mutation Template
+
+runs:
+  using: "composite"
+  steps:
+    - name: Say Hello
+      run: echo "Hello, World!"
+      shell: bash

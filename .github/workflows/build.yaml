@@ -33,6 +33,10 @@ jobs:
         uses: ./.github/actions/coverage-template
         if: matrix.os == 'ubuntu-latest'
 
+      - name: Mutation
+        uses: ./.github/actions/mutation-template
+        if: matrix.os == 'ubuntu-latest'
+
       - name: Publish
         uses: ./.github/actions/publish-template
         with:
