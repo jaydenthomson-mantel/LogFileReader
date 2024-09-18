@@ -10,3 +10,7 @@ runs:
     - name: Run Mutation Tests
       run: dotnet stryker
       shell: bash
+      
+    - name: Write to Job Summary
+      run: cat **/mutation-report.html >> $GITHUB_STEP_SUMMARY
+      shell: bash
