@@ -15,7 +15,3 @@ runs:
     - name: Build project
       run: dotnet build --configuration Release --no-restore
       shell: bash
-
-    - name: Run tests
-      run: dotnet test --no-restore
-      shell: bash

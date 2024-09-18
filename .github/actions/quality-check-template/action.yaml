@@ -1,0 +1,9 @@
+name: Quality Check Template
+# runs full quality check suite in ubuntu
+
+runs:
+  using: "composite"
+  steps:
+    - name: Run tests
+      run: dotnet test --no-restore
+      shell: bash

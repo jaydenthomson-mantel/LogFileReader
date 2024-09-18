@@ -28,6 +28,14 @@ jobs:
         with:
           os: ${{ matrix.os }}
 
+      - name: Run Windows Quality Check
+        if: startsWith(matrix.os, 'windows')
+        uses: ./.github/actions/windows-quality-check-template
+
+      - name: Run Quality Check
+        if: startsWith(matrix.os, 'ubuntu')
+        uses: ./.github/actions/quality-check-template
+
       - name: Publish
         uses: ./.github/actions/publish-template
         with:
