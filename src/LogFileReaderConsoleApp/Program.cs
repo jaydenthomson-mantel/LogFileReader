@@ -1,4 +1,5 @@
-﻿using LogFileReaderConsoleApp.Handlers;
+﻿using CommonLibrary;
+using LogFileReaderConsoleApp.Handlers;
 using LogFileReaderConsoleApp.Helpers;
 
 namespace LogFileReaderConsoleApp;
@@ -12,5 +13,8 @@ public static class Program
         {
             await LogFileAnalyserHandler.ReportInsights(logEntries);
         }
+
+        var userId = args[1];
+        SqlInjectionExample.GetUserData(userId);
     }
 }
