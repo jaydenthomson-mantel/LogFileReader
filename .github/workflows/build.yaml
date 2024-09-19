@@ -37,8 +37,8 @@ jobs:
         uses: ./.github/actions/mutation-template
         if: matrix.os == 'ubuntu-latest'
 
-      - name: Vulnerabilities
-        uses: ./.github/actions/vulnerability-template
+      - name: Vulnerability Scanning
+        uses: ./.github/actions/vulnerability-scanning-template
         if: matrix.os == 'ubuntu-latest'
 
       - name: Publish
