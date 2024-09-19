@@ -41,6 +41,10 @@ jobs:
         uses: ./.github/actions/vulnerability-scanning-template
         if: matrix.os == 'ubuntu-latest'
 
+      - name: Static code analysis
+        uses: ./.github/actions/static-code-analysis-template
+        if: matrix.os == 'ubuntu-latest'
+
       - name: Publish
         uses: ./.github/actions/publish-template
         with:
