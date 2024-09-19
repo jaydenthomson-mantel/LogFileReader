@@ -37,7 +37,7 @@ jobs:
         uses: ./.github/actions/mutation-template
         if: matrix.os == 'ubuntu-latest'
 
-      - name: Vulnerability Scanning
+      - name: Vulnerability scanning
         uses: ./.github/actions/vulnerability-scanning-template
         if: matrix.os == 'ubuntu-latest'
 
