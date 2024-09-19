@@ -1,10 +1,18 @@
 name: SonarQube Analysis Template
 
+inputs:
+  sonarToken:
+    description: 'SonarQube token'
+    required: true
+  sonarHostUrl:
+    description: 'SonarQube host URL'
+    required: true
+
 runs:
   using: "composite"
   steps:
     - name: SonarQube Scan
       uses: sonarsource/sonarqube-scan-action@v2.3.0
       env:
-        SONAR_TOKEN: ${{ secrets.SONARQUBE_TOKEN }}
-        SONAR_HOST_URL: ${{ vars.SONARQUBE_URL }}
+        SONAR_TOKEN: ${{ inputs.sonarToken }}
+        SONAR_HOST_URL: ${{ inputs.sonarHostUrl }}
