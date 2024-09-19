@@ -46,7 +46,7 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         with:
           sonarToken: ${{ secrets.SONARQUBE_TOKEN }}
-          sonarHostUrl: ${{ secrets.SONARQUBE_URL }}
+          sonarHostUrl: ${{ vars.SONARQUBE_URL }}
 
       - name: Publish
         uses: ./.github/actions/publish-template
