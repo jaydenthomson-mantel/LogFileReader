@@ -3,6 +3,11 @@ name: Build Template
 runs:
   using: "composite"
   steps:
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v3
+      with:
+        languages: 'csharp'
+      
     - name: Restore dependencies
       run: dotnet restore
       shell: bash
