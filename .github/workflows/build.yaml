@@ -47,6 +47,7 @@ jobs:
         with:
           sonarToken: ${{ secrets.SONARQUBE_TOKEN }}
           sonarHostUrl: ${{ vars.SONARQUBE_URL }}
+          sonarProjectKey: 'jaydenthomson-mantel_LogFileReader'
 
       - name: Publish
         uses: ./.github/actions/publish-template

@@ -7,6 +7,9 @@ inputs:
   sonarHostUrl:
     description: 'SonarQube host URL'
     required: true
+  sonarProjectKey:
+    description: 'SonarQube project key'
+    required: true
 
 runs:
   using: "composite"
@@ -16,3 +19,5 @@ runs:
       env:
         SONAR_TOKEN: ${{ inputs.sonarToken }}
         SONAR_HOST_URL: ${{ inputs.sonarHostUrl }}
+      with:
+        projectKey: ${{ inputs.sonarProjectKey }}
