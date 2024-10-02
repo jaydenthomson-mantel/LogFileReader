@@ -25,6 +25,8 @@ public class ConsoleArgumentsHelperTests
     {
         // Arrange
         var args = Array.Empty<string>();
+        using var stringWriter = new StringWriter();
+        Console.SetOut(stringWriter);
 
         // Act
         var result = ConsoleArgumentsHelper.TryGetFilePath(args, out var filePath);
@@ -32,5 +34,7 @@ public class ConsoleArgumentsHelperTests
         // Assert
         result.Should().BeFalse();
         filePath.Should().BeNull();
+        var output = stringWriter.ToString();
+        output.Should().Contain("Provide a file path.");
     }
 }
