@@ -14,8 +14,7 @@ namespace LogFileReaderConsoleAppTests
             // Arrange
             var logEntries = new List<LogEntry>
             {
-                new LogEntry
-                {
+                new() {
                     IpAddress = "192.168.1.1",
                     Identd = "-",
                     UserId = "user1",
