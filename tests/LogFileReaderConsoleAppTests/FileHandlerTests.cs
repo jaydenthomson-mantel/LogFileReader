@@ -1,5 +1,3 @@
-
-using System.Runtime.CompilerServices;
 using FluentAssertions;
 using LogFileReaderConsoleApp.Handlers;
 using Xunit;

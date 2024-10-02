@@ -1,3 +1,4 @@
+using System.Text;
 using LogFileReaderLibrary.Models;
 using LogFileReaderLibrary.Services;
 
@@ -9,12 +10,12 @@ namespace LogFileReaderConsoleApp.Handlers;
 public static class LogFileAnalyserHandler
 {
     /// <summary>
-    /// Analyzes the provided log entries and reports insights such as unique IP count, 
-    /// most visited URLs, and most active IPs.
+    /// Reports insights from a list of <see cref="LogEntry"/> objects.
     /// </summary>
-    /// <param name="logEntries">A list of log entries to analyze.</param>
-    /// <param name="top">The number of top entries to report for most visited URLs and most active IPs. Default is 3.</param>
-    public static async Task ReportInsights(IReadOnlyList<LogEntry> logEntries, int top = 3)
+    /// <param name="logEntries"></param>
+    /// <param name="top"></param>
+    /// <returns>A string containing the insights.</returns>
+    public static async Task<string> ReportInsights(IReadOnlyList<LogEntry> logEntries, int top = 3)
     {
         var uniqueIpCountTask = Task.Run(() => LogFileAnalyserService.UniqueIpCount(logEntries));
         var mostVisitedUrlsTask = Task.Run(() => LogFileAnalyserService.MostVisitedUrls(logEntries, top));
@@ -22,19 +23,22 @@ public static class LogFileAnalyserHandler
 
         await Task.WhenAll(uniqueIpCountTask, mostVisitedUrlsTask, mostActiveIpsTask);
         
-        Console.WriteLine("Log File Insights:");
-        Console.WriteLine($"Unique IP Count: {uniqueIpCountTask.Result}");
+        var output = new StringBuilder();
+        output.AppendLine("Log File Insights:");
+        output.AppendLine($"Unique IP Count: {uniqueIpCountTask.Result}");
         
-        Console.WriteLine("\nMost Visited URLs:");
+        output.AppendLine("\nMost Visited URLs:");
         foreach (var url in mostVisitedUrlsTask.Result)
         {
-            Console.WriteLine($"URL: {url.Key}, Visits: {url.Value}");
+            output.AppendLine($"URL: {url.Key}, Visits: {url.Value}");
         }
         
-        Console.WriteLine("\nMost Active IPs:");
+        output.AppendLine("\nMost Active IPs:");
         foreach (var ip in mostActiveIpsTask.Result)
         {
-            Console.WriteLine($"IP: {ip.Key}, Requests: {ip.Value}");
+            output.AppendLine($"IP: {ip.Key}, Requests: {ip.Value}");
         }
+
+        return output.ToString();
     }
 }

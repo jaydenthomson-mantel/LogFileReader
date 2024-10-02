@@ -10,7 +10,8 @@ public static class Program
         if (ConsoleArgumentsHelper.TryGetFilePath(args, out var filePath)
             && FileHandler.TryReadFile(filePath!, out var logEntries))
         {
-            await LogFileAnalyserHandler.ReportInsights(logEntries);
+            var consoleOutput = await LogFileAnalyserHandler.ReportInsights(logEntries);
+            Console.WriteLine(consoleOutput);
         }
     }
 }
