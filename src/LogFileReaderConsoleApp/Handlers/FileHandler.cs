@@ -1,3 +1,5 @@
+using System.Text;
+using LogFileReaderConsoleApp.Helpers;
 using LogFileReaderLibrary.Helpers;
 using LogFileReaderLibrary.Models;
 using LogFileReaderLibrary.Models.Exceptions;
@@ -33,7 +35,8 @@ public static class FileHandler
         }
         catch (BadApacheClfFileException ex)
         {
-            HandleBadApacheClfFileException(ex);
+            var errorMessage = ConsoleErrorMessagesHelper.GetBadApacheClfFileExceptionMessage(ex);
+            Console.WriteLine(errorMessage);
         }
         catch (Exception ex)
         {
@@ -41,27 +44,5 @@ public static class FileHandler
         }
 
         return false;
-    }
-
-    private static void HandleBadApacheClfFileException(BadApacheClfFileException ex)
-    {
-        Console.WriteLine(BadApacheClfFileException.BadApacheClfFileExceptionErrorMessage);
-
-        foreach (var innerException in ex.InnerExceptions)
-        {
-            if (innerException is ApacheClfLogValidationException aggregateException)
-            {
-                Console.WriteLine($"\t{aggregateException.InvalidApacheClfLogLineErrorMessage}");
-
-                foreach (var nestedInnerException in aggregateException.InnerExceptions)
-                {
-                    Console.WriteLine($"\t\t{nestedInnerException.Message}");
-                }
-            }
-            else
-            {
-                Console.WriteLine($"\t{innerException.Message}");
-            }
-        }
     }
 }

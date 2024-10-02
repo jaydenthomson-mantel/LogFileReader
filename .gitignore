@@ -90,6 +90,7 @@ StyleCopReport.xml
 *.tmp_proj
 *_wpftmp.csproj
 *.log
+!**/TestData/*.log
 *.tlog
 *.vspscc
 *.vssscc
@@ -397,3 +398,6 @@ FodyWeavers.xsd
 # JetBrains Rider
 .idea/
 *.sln.iml
+
+# Remove .DS_Store
+.DS_Store
