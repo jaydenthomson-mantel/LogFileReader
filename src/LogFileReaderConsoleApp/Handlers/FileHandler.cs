@@ -45,7 +45,7 @@ public static class FileHandler
 
     private static void HandleBadApacheClfFileException(BadApacheClfFileException ex)
     {
-        Console.WriteLine(ex.BadApacheClfFileExceptionErrorMessage);
+        Console.WriteLine(BadApacheClfFileException.BadApacheClfFileExceptionErrorMessage);
 
         foreach (var innerException in ex.InnerExceptions)
         {
