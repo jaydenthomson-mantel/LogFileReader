@@ -20,8 +20,8 @@ public class ConsoleErrorMessagesHelperTests
         ]);
 
         var expectedMessage = "One or more exceptions occured attempting to deserialize an Apache clf file. See the inner exceptions for more details.\n" +
-                      "\tOne or more properties in the log line 'Invalid Apache CLF log line' were invalid.\n" +
-                      "\t\tInner exception message\n";
+            "\tOne or more properties in the log line 'Invalid Apache CLF log line' were invalid.\n" +
+            "\t\tInner exception message\n";
 
         // Act
         var result = ConsoleErrorMessagesHelper.GetBadApacheClfFileExceptionMessage(ex);
